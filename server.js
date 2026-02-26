@@ -7,6 +7,15 @@ require('dotenv').config();
 
 const app = express();
 
+// ============= LOGGING =============
+console.log('\n=================================');
+console.log('🚀 Starting RestoManagerKe Server');
+console.log('=================================');
+console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`📡 Port: ${process.env.PORT || 5000}`);
+console.log(`📁 Public path: ${path.join(__dirname, 'public')}`);
+console.log('=================================\n');
+
 // ============= MIDDLEWARE =============
 // Configure CORS for production - allow multiple origins
 const corsOrigins = process.env.CORS_ORIGIN 
@@ -32,15 +41,24 @@ app.use(cors({
 app.options('*', cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ============= DATABASE CONNECTION =============
 const connectDB = async () => {
     try {
+        console.log('🔄 Connecting to MongoDB...');
+        
+        if (!process.env.MONGODB_URI) {
+            console.error('❌ MONGODB_URI environment variable is not set!');
+            console.error('💡 Make sure to set it in Pxxl App environment variables');
+            return;
+        }
+        
         const conn = await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            // These options help with connection stability in production
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,
         });
@@ -50,15 +68,6 @@ const connectDB = async () => {
         console.log('=================================');
         console.log(`📊 Database: ${conn.connection.name}`);
         console.log(`📚 Host: ${conn.connection.host}`);
-        console.log(`🔌 Port: ${conn.connection.port}`);
-        console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-        
-        // Log available collections (only in development)
-        if (process.env.NODE_ENV !== 'production') {
-            const collections = await conn.connection.db.listCollections().toArray();
-            console.log(`\n📋 Available Collections (${collections.length}):`);
-            collections.forEach(col => console.log(`   - ${col.name}`));
-        }
         console.log('=================================\n');
         
         // Handle connection events
@@ -79,7 +88,7 @@ const connectDB = async () => {
         console.error('❌ MongoDB Connection Error:', error.message);
         console.error('💡 Check your MONGODB_URI environment variable');
         console.error('💡 Make sure your IP is whitelisted in MongoDB Atlas');
-        process.exit(1);
+        // Don't exit - let the app try to serve static files even without DB
     }
 };
 
@@ -147,46 +156,30 @@ app.get('/api/test', (req, res) => {
         timestamp: new Date().toISOString(),
         database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
         environment: process.env.NODE_ENV || 'development',
-        endpoints: {
-            auth: '/api/auth',
-            menu: '/api/menu',
-            orders: '/api/orders',
-            reservations: '/api/reservations',
-            mpesa: '/api/mpesa',
-            inventory: '/api/inventory',
-            suppliers: '/api/suppliers',
-            employees: '/api/employees',
-            payroll: '/api/payroll',
-            expenses: '/api/expenses',
-            transactions: '/api/transactions',
-            notifications: '/api/notifications',
-            restaurant: '/api/restaurant',
-            dashboard: '/api/dashboard',
-            reports: '/api/reports',
-            customers: '/api/customers',
-            health: '/health'
-        }
+        mongodb_uri_set: !!process.env.MONGODB_URI
     });
 });
 
 // ============= FRONTEND ROUTES =============
 // Main Dashboard
 app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    const filePath = path.join(__dirname, 'public', 'index.html');
+    console.log(`📄 Serving dashboard from: ${filePath}`);
+    res.sendFile(filePath);
 });
 
 // Customer Portal
-app.get('/order', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'customer-portal.html'));
-});
-
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'customer-portal.html'));
+    const filePath = path.join(__dirname, 'public', 'customer-portal.html');
+    console.log(`📄 Serving customer portal from: ${filePath}`);
+    res.sendFile(filePath);
 });
 
 // Test Page
 app.get('/test', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'test.html'));
+    const filePath = path.join(__dirname, 'public', 'test.html');
+    console.log(`📄 Serving test page from: ${filePath}`);
+    res.sendFile(filePath);
 });
 
 // ============= API ROOT =============
@@ -233,21 +226,21 @@ app.get('/health', (req, res) => {
             state: dbState[mongoose.connection.readyState] || 'unknown',
             connected: mongoose.connection.readyState === 1,
             name: mongoose.connection.name || 'unknown',
-            host: mongoose.connection.host,
-            port: mongoose.connection.port
+            host: mongoose.connection.host
         },
         server: {
             port: process.env.PORT || 5000,
-            nodeVersion: process.version
+            nodeVersion: process.version,
+            publicFolderExists: require('fs').existsSync(path.join(__dirname, 'public'))
         }
     });
 });
 
 // ============= ERROR HANDLING =============
-// 404 handler
+// 404 handler - serve frontend for non-API routes
 app.use((req, res) => {
     // Don't send 404 for frontend routes - let frontend handle routing
-    if (req.accepts('html') && !req.path.startsWith('/api/')) {
+    if (!req.path.startsWith('/api/') && req.path !== '/health') {
         // Serve the appropriate frontend app
         if (req.path.startsWith('/dashboard')) {
             return res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -310,13 +303,19 @@ app.listen(PORT, () => {
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`📊 Dashboard: http://localhost:${PORT}/dashboard`);
     console.log(`🍽️  Customer Portal: http://localhost:${PORT}/`);
-    console.log(`🔧 Test Page: http://localhost:${PORT}/test`);
-    console.log(`🔌 API Test: http://localhost:${PORT}/api/test`);
     console.log(`❤️  Health: http://localhost:${PORT}/health`);
     console.log(`💳 M-PESA: ${process.env.MPESA_ENVIRONMENT || 'sandbox'} mode`);
     
-    if (process.env.NODE_ENV === 'production') {
-        console.log(`🌐 CORS Origins: ${corsOrigins.join(', ')}`);
+    // Check if public folder exists
+    const fs = require('fs');
+    const publicPath = path.join(__dirname, 'public');
+    if (fs.existsSync(publicPath)) {
+        console.log(`📁 Public folder: ✅ Found`);
+        const files = fs.readdirSync(publicPath);
+        console.log(`📄 Files: ${files.join(', ')}`);
+    } else {
+        console.log(`📁 Public folder: ❌ NOT FOUND!`);
     }
+    
     console.log('=================================\n');
 });

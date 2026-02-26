@@ -1,43 +1,44 @@
-# Environment variables
+# dependencies
+node_modules/
+package-lock.json
+
+# environment variables
 .env
 .env.local
 .env.production
-
-# Node modules
-node_modules/
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-
-# Build files
-dist/
-build/
-
-# dependencies
-package-lock.json
-
-
+.env.development
 
 # logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs/
+*.log
 
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # testing
 coverage/
+.nyc_output/
 
 # production
 dist/
 build/
+
+# temporary files
+*.tmp
+*.temp
+
+# DO NOT ignore public folder - this is critical!
+# public/     <-- MAKE SURE THIS IS NOT HERE!
+# public/*    <-- MAKE SURE THIS IS NOT HERE!

@@ -1,0 +1,10 @@
+{
+  "name": "restomanagerke",
+  "version": "1.0.0",
+  "buildCommand": "npm install",
+  "startCommand": "node server.js",
+  "outputDirectory": ".",
+  "publicDirectory": "public",
+  "environment": "node",
+  "installCommand": "npm install"
+}
