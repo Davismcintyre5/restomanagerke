@@ -2521,11 +2521,13 @@ const API_URL = window.location.hostname === 'localhost'
         let currentReservationId = null;
 
         // ============= INITIALIZATION =============
-        document.addEventListener('DOMContentLoaded', function() {
-            if (token) validateToken();
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-        });
+  document.addEventListener('DOMContentLoaded', function() {
+    // Don't auto-validate - always start at login page
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    
+  
+});
 
         function updateDateTime() {
             const now = new Date();
