@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RestoManagerKe - Test</title>
+    <style>
+        body { font-family: Arial; padding: 2rem; background: #0f172a; color: white; }
+        .card { background: #1e293b; padding: 2rem; border-radius: 16px; max-width: 600px; margin: 2rem auto; }
+        h1 { color: #f97316; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        button { padding: 1rem 2rem; background: #f97316; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        pre { background: #0f172a; padding: 1rem; border-radius: 8px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1><i class="fas fa-utensils"></i> RestoManagerKe Test</h1>
+        <div id="status">Testing API connection...</div>
+        <button onclick="testAPI()">Test Again</button>
+        <pre id="result"></pre>
+    </div>
+    <script>
+        async function testAPI() {
+            const status = document.getElementById('status');
+            const result = document.getElementById('result');
+            try {
+                const res = await fetch('/api/test');
+                const data = await res.json();
+                status.innerHTML = '<span class="success">✅ API Connected!</span>';
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                status.innerHTML = '<span class="error">❌ API Connection Failed</span>';
+                result.textContent = err.message;
+            }
+        }
+        testAPI();
+    </script>
+</body>
+</html>

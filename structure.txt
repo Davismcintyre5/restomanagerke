@@ -1,0 +1,52 @@
+RestoManagerKE/
+│
+├── server.js
+├── package.json
+├── .env
+├── .gitignore
+├── seed.js
+│
+├── config/
+│   └── database.js
+│
+├── models/
+│   ├── User.js
+│   ├── MenuItem.js
+│   ├── Order.js
+│   ├── Reservation.js
+│   ├── Inventory.js
+│   ├── Supplier.js
+│   ├── Employee.js
+│   ├── Payroll.js
+│   ├── Expense.js
+│   ├── Transaction.js
+│   ├── Notification.js
+│   └── Restaurant.js
+│
+├── routes/
+│   ├── auth.js
+│   ├── menu.js
+│   ├── orders.js
+│   ├── reservations.js
+│   ├── mpesa.js
+│   ├── inventory.js
+│   ├── suppliers.js
+│   ├── employees.js
+│   ├── payroll.js
+│   ├── expenses.js
+│   ├── transactions.js
+│   ├── notifications.js
+│   ├── restaurant.js
+│   ├── dashboard.js
+│   ├── reports.js
+│   └── health.js
+│
+├── middleware/
+│   └── auth.js
+│
+└── utils/
+    ├── helpers.js
+    └── validators.js
+    public
+ 	index.html
+	customer-portal.html

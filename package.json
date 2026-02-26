@@ -1,0 +1,43 @@
+{
+  "name": "restomanagerke",
+  "version": "3.0.0",
+  "description": "Complete Restaurant Management System with M-PESA Integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node seed.js",
+    "seed:prod": "node seed-production.js",
+    "test": "node test-db.js",
+    "postinstall": "npm run seed:prod"
+  },
+  "keywords": [
+    "restaurant",
+    "management",
+    "kenya",
+    "mpesa",
+    "ordering",
+    "safaricom",
+    "food-delivery"
+  ],
+  "author": "Davis McIntyre",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "axios": "^1.5.0",
+    "express-validator": "^7.0.1",
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  }
+}
