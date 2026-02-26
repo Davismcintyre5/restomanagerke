@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 require('dotenv').config();
 
@@ -33,22 +32,6 @@ if (process.env.NODE_ENV === 'production') {
         next();
     });
 }
-
-// Rate limiting for login attempts (5 attempts per 15 minutes)
-const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // 5 attempts per window
-    message: { message: 'Too many login attempts, please try again after 15 minutes' },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
-// General API rate limiting (100 requests per 15 minutes)
-const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: { message: 'Too many requests, please try again later' }
-});
 
 // ============= CORS CONFIGURATION =============
 const corsOrigins = process.env.CORS_ORIGIN 
@@ -160,10 +143,6 @@ const reportsRoutes = require('./routes/reports');
 const healthRoutes = require('./routes/health');
 const customerRoutes = require('./routes/customers');
 const customerAuthRoutes = require('./routes/customer-auth');
-
-// ============= APPLY RATE LIMITING =============
-app.use('/api/auth/login', loginLimiter);
-app.use('/api/', apiLimiter);
 
 // ============= USE ROUTES =============
 app.use('/api/auth', authRoutes);
@@ -342,7 +321,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🍽️  Customer Portal: /`);
     console.log(`❤️  Health: /health`);
     console.log(`💳 M-PESA: ${process.env.MPESA_ENVIRONMENT || 'sandbox'} mode`);
-    console.log(`🔒 Rate Limiting: Enabled (5 login attempts/15min)`);
+    console.log(`🔒 Rate Limiting: Disabled`);
     
     // Check if public folder exists
     const fs = require('fs');
