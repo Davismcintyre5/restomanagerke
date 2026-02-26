@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 require('dotenv').config();
 
 const app = express();
@@ -16,8 +18,39 @@ console.log(`📡 Port: ${process.env.PORT || 5000}`);
 console.log(`📁 Public path: ${path.join(__dirname, 'public')}`);
 console.log('=================================\n');
 
-// ============= MIDDLEWARE =============
-// Configure CORS for production - allow multiple origins
+// ============= SECURITY MIDDLEWARE =============
+// Helmet for security headers
+app.use(helmet({
+    contentSecurityPolicy: false, // Disable if you're using inline scripts
+}));
+
+// Force HTTPS in production
+if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+        if (req.headers['x-forwarded-proto'] !== 'https') {
+            return res.redirect('https://' + req.headers.host + req.url);
+        }
+        next();
+    });
+}
+
+// Rate limiting for login attempts (5 attempts per 15 minutes)
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 attempts per window
+    message: { message: 'Too many login attempts, please try again after 15 minutes' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// General API rate limiting (100 requests per 15 minutes)
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { message: 'Too many requests, please try again later' }
+});
+
+// ============= CORS CONFIGURATION =============
 const corsOrigins = process.env.CORS_ORIGIN 
     ? process.env.CORS_ORIGIN.split(',') 
     : ['http://localhost:5000', 'http://127.0.0.1:5000'];
@@ -88,7 +121,6 @@ const connectDB = async () => {
         console.error('❌ MongoDB Connection Error:', error.message);
         console.error('💡 Check your MONGODB_URI environment variable');
         console.error('💡 Make sure your IP is whitelisted in MongoDB Atlas');
-        // Don't exit - let the app try to serve static files even without DB
     }
 };
 
@@ -128,6 +160,10 @@ const reportsRoutes = require('./routes/reports');
 const healthRoutes = require('./routes/health');
 const customerRoutes = require('./routes/customers');
 const customerAuthRoutes = require('./routes/customer-auth');
+
+// ============= APPLY RATE LIMITING =============
+app.use('/api/auth/login', loginLimiter);
+app.use('/api/', apiLimiter);
 
 // ============= USE ROUTES =============
 app.use('/api/auth', authRoutes);
@@ -295,16 +331,18 @@ app.use((err, req, res, next) => {
 
 // ============= START SERVER =============
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('\n=================================');
     console.log('🚀 RestoManagerKe Server Started');
     console.log('=================================');
     console.log(`📡 Port: ${PORT}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`📊 Dashboard: http://localhost:${PORT}/dashboard`);
-    console.log(`🍽️  Customer Portal: http://localhost:${PORT}/`);
-    console.log(`❤️  Health: http://localhost:${PORT}/health`);
+    console.log(`📊 Dashboard: /dashboard`);
+    console.log(`🍽️  Customer Portal: /`);
+    console.log(`❤️  Health: /health`);
     console.log(`💳 M-PESA: ${process.env.MPESA_ENVIRONMENT || 'sandbox'} mode`);
+    console.log(`🔒 Rate Limiting: Enabled (5 login attempts/15min)`);
     
     // Check if public folder exists
     const fs = require('fs');
@@ -318,4 +356,12 @@ app.listen(PORT, () => {
     }
     
     console.log('=================================\n');
+});
+
+// Handle server errors
+server.on('error', (error) => {
+    console.error('❌ Server error:', error);
+    if (error.code === 'EADDRINUSE') {
+        console.error(`⚠️ Port ${PORT} is already in use`);
+    }
 });
