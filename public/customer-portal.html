@@ -2,35 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Restaurant - Order Online & Reservations</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Copy all the styles from the previous customer portal */
+        /* ============= CSS RESET ============= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
+        /* ============= CSS VARIABLES ============= */
+        :root {
+            --primary-color: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #fb923c;
+            --secondary-color: #10b981;
+            --dark-bg: #1e293b;
+            --darker-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --text-lighter: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 4px 20px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 24px;
+            --border-radius-xl: 32px;
         }
 
-        /* Header */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============= TYPOGRAPHY ============= */
+        h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+        h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+        h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); }
+        p { font-size: clamp(0.9rem, 2vw, 1rem); }
+
+        /* ============= HEADER ============= */
         .header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1rem;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
         }
 
         .header-content {
@@ -39,34 +71,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .logo i {
-            font-size: 2.2rem;
-            color: #f97316;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            color: var(--primary-color);
             filter: drop-shadow(0 2px 5px rgba(249,115,22,0.3));
         }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #f97316 100%);
+            background: linear-gradient(135deg, #fff 0%, var(--primary-color) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            white-space: nowrap;
         }
 
+        /* ============= NAVIGATION ============= */
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 0.3rem;
             align-items: center;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .nav-links a {
@@ -74,12 +112,14 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            white-space: nowrap;
         }
 
         .nav-links a:hover {
@@ -88,18 +128,20 @@
         }
 
         .nav-links a i {
-            color: #f97316;
+            color: var(--primary-color);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
 
+        /* ============= CART ICON ============= */
         .cart-icon {
             position: relative;
             cursor: pointer;
             background: rgba(249,115,22,0.15);
-            padding: 0.7rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s;
         }
 
@@ -111,24 +153,27 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background: #f97316;
+            background: var(--primary-color);
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
-            padding: 4px 8px;
+            padding: 0.2rem 0.5rem;
             border-radius: 50px;
-            border: 2px solid #1e293b;
+            border: 2px solid var(--dark-bg);
+            min-width: 22px;
+            text-align: center;
         }
 
+        /* ============= PROFILE ICON ============= */
         .profile-icon {
             position: relative;
             cursor: pointer;
             background: rgba(249,115,22,0.15);
-            padding: 0.7rem 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 50px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s;
         }
 
@@ -141,12 +186,12 @@
             top: 100%;
             right: 0;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            min-width: 220px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
             display: none;
             z-index: 1000;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             overflow: hidden;
             margin-top: 10px;
         }
@@ -156,33 +201,47 @@
         }
 
         .dropdown-item {
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #0f172a;
+            color: var(--text-dark);
             transition: background 0.3s;
             cursor: pointer;
+            font-size: 0.95rem;
         }
 
         .dropdown-item:hover {
-            background: #f8fafc;
-            color: #f97316;
+            background: var(--light-bg);
+            color: var(--primary-color);
         }
 
         .dropdown-item i {
             width: 20px;
-            color: #64748b;
+            color: var(--text-light);
         }
 
         .dropdown-divider {
             height: 1px;
-            background: #e2e8f0;
+            background: var(--border-color);
             margin: 0.5rem 0;
         }
 
-        /* Auth Modal */
-        .auth-modal {
+        /* ============= MOBILE MENU BUTTON ============= */
+        .mobile-menu-btn {
+            display: none;
+            background: rgba(249,115,22,0.15);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        /* ============= MODALS ============= */
+        .auth-modal, .forgot-modal, .profile-modal, .cart-modal, 
+        .reservation-modal, .tracking-modal, .history-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -194,191 +253,59 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
+            padding: 1rem;
         }
 
-        .auth-modal.active {
+        .auth-modal.active, .forgot-modal.active, .profile-modal.active,
+        .cart-modal.active, .reservation-modal.active, .tracking-modal.active,
+        .history-modal.active {
             display: flex;
         }
 
-        .auth-content {
+        .modal-content {
             background: white;
-            border-radius: 32px;
-            padding: 2.5rem;
-            max-width: 450px;
+            border-radius: var(--border-radius-xl);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            max-width: 600px;
             width: 95%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-lg);
         }
 
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .auth-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #f97316;
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-header p {
-            color: #64748b;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 1rem;
-        }
-
-        .auth-tab {
-            flex: 1;
-            text-align: center;
-            padding: 0.5rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: #64748b;
-            transition: all 0.3s;
-        }
-
-        .auth-tab.active {
-            color: #f97316;
-            border-bottom: 3px solid #f97316;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #f97316;
-            box-shadow: 0 0 0 4px rgba(249,115,22,0.1);
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: all 0.3s;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(249,115,22,0.3);
-        }
-
-        .auth-btn.secondary {
-            background: #64748b;
-        }
-
-        .auth-btn.secondary:hover {
-            background: #475569;
-        }
-
-        .auth-link {
-            text-align: center;
-            margin-top: 1rem;
-            color: #64748b;
-        }
-
-        .auth-link span {
-            color: #f97316;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .auth-link span:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            color: #ef4444;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .success-message {
-            color: #10b981;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        /* Main Container */
+        /* ============= CONTAINER ============= */
         .container {
             max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+            margin: 1rem auto;
+            padding: 0 1rem;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 2rem;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+            flex: 1;
         }
 
-        /* Sidebar */
+        /* ============= SIDEBAR ============= */
         .sidebar {
             background: white;
-            border-radius: 24px;
-            padding: 1.8rem;
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
             height: fit-content;
             position: sticky;
-            top: 100px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
+            top: 90px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
         .sidebar h3 {
             margin-bottom: 1.2rem;
-            color: #1e293b;
-            font-size: 1.2rem;
-            font-weight: 600;
+            color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .sidebar h3 i {
-            color: #f97316;
+            color: var(--primary-color);
         }
 
         .category-list {
@@ -387,25 +314,25 @@
         }
 
         .category-list li {
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1rem;
             margin: 0.3rem 0;
-            border-radius: 12px;
+            border-radius: var(--border-radius-sm);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 500;
-            color: #475569;
+            color: var(--text-light);
         }
 
         .category-list li:hover {
             background: #fef3c7;
-            color: #f97316;
+            color: var(--primary-color);
         }
 
         .category-list li.active {
-            background: #f97316;
+            background: var(--primary-color);
             color: white;
             box-shadow: 0 10px 20px rgba(249,115,22,0.2);
         }
@@ -415,19 +342,20 @@
             font-size: 1.1rem;
         }
 
+        /* ============= LANGUAGE TOGGLE ============= */
         .language-toggle {
             display: flex;
-            gap: 10px;
-            margin: 2rem 0;
+            gap: 8px;
+            margin: 1.5rem 0;
             padding: 1rem 0;
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .lang-btn {
             flex: 1;
-            padding: 10px;
-            border: 1px solid #e2e8f0;
+            padding: 8px;
+            border: 1px solid var(--border-color);
             background: white;
             border-radius: 50px;
             cursor: pointer;
@@ -436,31 +364,34 @@
         }
 
         .lang-btn.active {
-            background: #f97316;
+            background: var(--primary-color);
             color: white;
-            border-color: #f97316;
+            border-color: var(--primary-color);
         }
 
+        /* ============= INFO BOX ============= */
         .info-box {
-            background: #f8fafc;
-            border-radius: 16px;
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
             padding: 1.2rem;
             margin: 1.5rem 0;
         }
 
         .info-box p {
-            color: #475569;
+            color: var(--text-light);
             margin: 0.5rem 0;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 0.95rem;
         }
 
         .info-box i {
-            color: #f97316;
+            color: var(--primary-color);
             width: 24px;
         }
 
+        /* ============= STATUS BADGE ============= */
         .status-badge {
             display: inline-block;
             padding: 0.2rem 0.8rem;
@@ -479,22 +410,22 @@
             color: #991b1b;
         }
 
-        /* Main Content */
+        /* ============= MAIN CONTENT ============= */
         .main-content {
             background: white;
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius-lg);
+            padding: clamp(1.5rem, 3vw, 2rem);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
-        /* Hero Banner */
+        /* ============= HERO BANNER ============= */
         .hero-banner {
-            background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #f59e0b 100%);
             color: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            margin-bottom: 2.5rem;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: var(--border-radius-md);
+            margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 30px rgba(249,115,22,0.2);
@@ -517,67 +448,56 @@
         }
 
         .hero-banner h2 {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 800;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             position: relative;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .hero-banner p {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 3vw, 1.2rem);
             opacity: 0.95;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             position: relative;
-            font-weight: 500;
         }
 
         .promo-code {
             background: rgba(255,255,255,0.2);
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 50px;
             display: inline-block;
-            font-size: 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             font-weight: 800;
             letter-spacing: 2px;
-            position: relative;
             border: 2px dashed white;
             backdrop-filter: blur(5px);
         }
 
-        /* Special Offers */
+        /* ============= OFFERS GRID ============= */
         .offers-section {
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .offers-section h3 {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .offers-section h3 i {
-            color: #f97316;
+            margin-bottom: 1.2rem;
         }
 
         .offers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .offer-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            padding: 1.8rem;
-            border-radius: 16px;
+            padding: 1.5rem;
+            border-radius: var(--border-radius-md);
             text-align: center;
-            position: relative;
-            overflow: hidden;
             transition: transform 0.3s;
             border: 1px solid #f59e0b;
         }
@@ -587,39 +507,40 @@
         }
 
         .offer-card .discount {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 800;
-            color: #f97316;
-            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
         }
 
         .offer-card .condition {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #6b4f0b;
-            font-weight: 500;
         }
 
         .offer-card .code {
-            margin-top: 1rem;
-            padding: 0.5rem;
+            margin-top: 0.8rem;
+            padding: 0.4rem;
             background: rgba(255,255,255,0.5);
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #f97316;
+            color: var(--primary-color);
         }
 
-        /* Search Bar */
+        /* ============= SEARCH BAR ============= */
         .search-bar {
             margin-bottom: 2rem;
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
+            flex-wrap: wrap;
         }
 
         .search-bar input {
             flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid #e2e8f0;
+            min-width: 200px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--border-color);
             border-radius: 50px;
             font-size: 1rem;
             transition: all 0.3s;
@@ -627,13 +548,13 @@
 
         .search-bar input:focus {
             outline: none;
-            border-color: #f97316;
+            border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(249,115,22,0.1);
         }
 
         .search-bar button {
-            padding: 1rem 2rem;
-            background: #f97316;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
             color: white;
             border: none;
             border-radius: 50px;
@@ -643,102 +564,90 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
 
         .search-bar button:hover {
-            background: #ea580c;
-            transform: scale(1.05);
+            background: var(--primary-dark);
+            transform: scale(1.02);
         }
 
-        /* Menu Items */
-        .menu-section h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
+        /* ============= MENU GRID ============= */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
         .menu-item {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 1.8rem;
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
             transition: all 0.3s;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
         }
 
         .menu-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
-            border-color: #f97316;
-        }
-
-        .menu-item.out-of-stock {
-            opacity: 0.7;
-            filter: grayscale(0.5);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
         }
 
         .menu-item-image {
             width: 100%;
-            height: 160px;
+            aspect-ratio: 1;
             background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            border-radius: 16px;
-            margin-bottom: 1.2rem;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #64748b;
-            font-size: 4rem;
+            color: var(--text-light);
+            font-size: clamp(2.5rem, 8vw, 4rem);
             transition: all 0.3s;
         }
 
         .menu-item:hover .menu-item-image {
-            background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #f59e0b 100%);
             color: white;
         }
 
         .menu-item h4 {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             margin-bottom: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: 700;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .menu-item .price {
-            color: #f97316;
+            color: var(--primary-color);
             font-weight: 800;
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
             background: #fef3c7;
-            padding: 0.3rem 0.8rem;
+            padding: 0.2rem 0.8rem;
             border-radius: 50px;
+            white-space: nowrap;
         }
 
         .menu-item .description {
-            color: #64748b;
+            color: var(--text-light);
             font-size: 0.95rem;
-            margin-bottom: 1.2rem;
-            line-height: 1.5;
+            margin-bottom: 1rem;
+            flex: 1;
         }
 
         .menu-item .add-to-cart {
             width: 100%;
-            padding: 1rem;
-            background: #f97316;
+            padding: 0.8rem;
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--border-radius-sm);
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
@@ -747,93 +656,25 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            margin-top: auto;
         }
 
         .menu-item .add-to-cart:hover:not(:disabled) {
-            background: #ea580c;
+            background: var(--primary-dark);
             transform: scale(1.02);
         }
 
         .menu-item .add-to-cart:disabled {
-            background: #94a3b8;
+            background: var(--text-lighter);
             cursor: not-allowed;
         }
 
-        .stock-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: #fef3c7;
-            color: #f97316;
-        }
-
-        .stock-badge.low {
-            background: #fee2e2;
-            color: #ef4444;
-        }
-
-        /* Cart Modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .cart-modal.active {
-            display: flex;
-        }
-
+        /* ============= CART MODAL ============= */
         .cart-content {
-            background: white;
-            border-radius: 32px;
-            padding: 2.5rem;
-            max-width: 600px;
-            width: 95%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .cart-header h3 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #64748b;
-            transition: color 0.3s;
-        }
-
-        .close-btn:hover {
-            color: #f97316;
+            max-width: 500px;
         }
 
         .cart-items {
-            margin-bottom: 2rem;
             max-height: 400px;
             overflow-y: auto;
             padding-right: 0.5rem;
@@ -844,98 +685,77 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .cart-item-info {
             flex: 2;
+            min-width: 150px;
         }
 
         .cart-item-info h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
             margin-bottom: 0.2rem;
         }
 
         .cart-item-info p {
-            color: #f97316;
+            color: var(--primary-color);
             font-weight: 600;
         }
 
         .cart-item-quantity {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .cart-item-quantity button {
-            width: 36px;
-            height: 36px;
-            border: 2px solid #e2e8f0;
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--border-color);
             background: white;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cart-item-quantity button:hover {
-            background: #f97316;
+            background: var(--primary-color);
             color: white;
-            border-color: #f97316;
+            border-color: var(--primary-color);
         }
 
         .cart-item-quantity span {
             font-weight: 700;
-            font-size: 1.2rem;
             min-width: 30px;
             text-align: center;
         }
 
         .cart-item-total {
             font-weight: 700;
-            font-size: 1.1rem;
-            color: #1e293b;
             min-width: 80px;
             text-align: right;
         }
 
-        .cart-summary {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.5rem 0;
-            font-size: 1rem;
-        }
-
-        .summary-row.total {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #f97316;
-            border-top: 2px solid #e2e8f0;
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
-
-        /* Order Type Selection */
+        /* ============= ORDER TYPE SELECTOR ============= */
         .order-type-selector {
-            display: flex;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
             margin: 1.5rem 0;
         }
 
         .order-type-btn {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
             background: white;
             cursor: pointer;
             transition: all 0.3s;
@@ -943,27 +763,28 @@
         }
 
         .order-type-btn.active {
-            border-color: #f97316;
+            border-color: var(--primary-color);
             background: #fef3c7;
         }
 
         .order-type-btn i {
-            font-size: 1.5rem;
-            color: #f97316;
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
         }
 
         .order-type-btn span {
             display: block;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
-        /* Delivery Address Form */
+        /* ============= DELIVERY ADDRESS SECTION ============= */
         .delivery-address-section {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.2rem;
+            margin: 1.2rem 0;
             display: none;
         }
 
@@ -973,110 +794,53 @@
 
         .address-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
         }
 
-        /* M-PESA Section */
+        /* ============= M-PESA SECTION ============= */
         .mpesa-section {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            padding: 2rem;
-            border-radius: 20px;
-            margin: 2rem 0;
-            border: 1px solid #e2e8f0;
-        }
-
-        .mpesa-section h4 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #1e293b;
-            margin-bottom: 1.2rem;
-            font-size: 1.3rem;
-        }
-
-        .mpesa-section h4 i {
-            color: #10b981;
-            font-size: 2rem;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #f1f5f9 100%);
+            padding: 1.5rem;
+            border-radius: var(--border-radius-md);
+            margin: 1.5rem 0;
         }
 
         .mpesa-input {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .mpesa-input input {
             flex: 1;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-        }
-
-        .mpesa-input input:focus {
-            outline: none;
-            border-color: #f97316;
+            min-width: 200px;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
         }
 
         .mpesa-input button {
-            padding: 1rem 2rem;
-            background: #10b981;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--border-radius-sm);
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            white-space: nowrap;
         }
 
-        .mpesa-input button:hover {
-            background: #059669;
-            transform: scale(1.02);
-        }
-
-        .mpesa-input button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        .mpesa-status {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 12px;
-            display: none;
-        }
-
-        .mpesa-status.success {
-            background: #d1fae5;
-            color: #065f46;
-            display: block;
-        }
-
-        .mpesa-status.error {
-            background: #fee2e2;
-            color: #991b1b;
-            display: block;
-        }
-
-        .mpesa-status.pending {
-            background: #fef3c7;
-            color: #92400e;
-            display: block;
-        }
-
+        /* ============= PAY BUTTON ============= */
         .pay-btn {
             width: 100%;
-            padding: 1.5rem;
-            background: #f97316;
+            padding: 1.2rem;
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 16px;
-            font-size: 1.3rem;
+            border-radius: var(--border-radius-md);
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
@@ -1087,95 +851,18 @@
         }
 
         .pay-btn:hover:not(:disabled) {
-            background: #ea580c;
+            background: var(--primary-dark);
             transform: scale(1.02);
-            box-shadow: 0 20px 30px rgba(249,115,22,0.3);
         }
 
-        .pay-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
-
-        .pay-btn.secondary {
-            background: #64748b;
-        }
-
-        .pay-btn.secondary:hover {
-            background: #475569;
-        }
-
-        /* Reservation Modal */
-        .reservation-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .reservation-modal.active {
-            display: flex;
-        }
-
-        .reservation-content {
-            background: white;
-            border-radius: 32px;
-            padding: 2.5rem;
-            max-width: 600px;
-            width: 95%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .time-input-note {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-top: 0.5rem;
-        }
-
-        .time-input-note i {
-            color: #f97316;
-        }
-
-        /* Order Tracking Modal */
-        .tracking-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .tracking-modal.active {
-            display: flex;
-        }
-
-        .tracking-content {
-            background: white;
-            border-radius: 32px;
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 95%;
-            text-align: center;
-        }
-
+        /* ============= TRACKING STEPS ============= */
         .tracking-steps {
             display: flex;
             justify-content: space-between;
             margin: 2rem 0;
             position: relative;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .tracking-steps::before {
@@ -1185,7 +872,7 @@
             left: 40px;
             right: 40px;
             height: 4px;
-            background: #e2e8f0;
+            background: var(--border-color);
             z-index: 1;
         }
 
@@ -1196,175 +883,28 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 4px solid #e2e8f0;
+            border: 4px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #64748b;
+            color: var(--text-light);
         }
 
         .step.completed {
-            border-color: #10b981;
-            background: #10b981;
+            border-color: var(--secondary-color);
+            background: var(--secondary-color);
             color: white;
         }
 
         .step.active {
-            border-color: #f97316;
-            background: #f97316;
+            border-color: var(--primary-color);
+            background: var(--primary-color);
             color: white;
             animation: pulse 1s infinite;
         }
 
-        .tracking-info {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: left;
-        }
-
-        .tracking-info p {
-            margin: 0.5rem 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .tracking-info .label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .tracking-info .value {
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .delivery-details {
-            background: #f1f5f9;
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-            text-align: left;
-        }
-
-        .delivery-details h4 {
-            color: #f97316;
-            margin-bottom: 0.5rem;
-        }
-
-        .delivery-details p {
-            margin: 0.3rem 0;
-            color: #475569;
-        }
-
-        /* Order History Modal */
-        .history-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .history-modal.active {
-            display: flex;
-        }
-
-        .history-content {
-            background: white;
-            border-radius: 32px;
-            padding: 2.5rem;
-            max-width: 800px;
-            width: 95%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .order-history-item {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .order-history-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .order-history-items {
-            margin: 0.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        .order-history-items div {
-            margin: 0.2rem 0;
-            color: #475569;
-        }
-
-        .order-history-total {
-            font-weight: 700;
-            color: #f97316;
-            margin-top: 0.5rem;
-        }
-
-        .order-history-address {
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 0.8rem;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .order-history-address i {
-            color: #f97316;
-            margin-right: 0.3rem;
-        }
-
-        /* Alert */
-        .alert {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1.2rem 2rem;
-            border-radius: 16px;
-            color: white;
-            font-weight: 600;
-            z-index: 3000;
-            display: none;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            max-width: 400px;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .alert.success { background: #10b981; }
-        .alert.error { background: #ef4444; }
-        .alert.info { background: #3b82f6; }
-        .alert.warning { background: #f97316; }
-
-        /* Loading Spinner */
+        /* ============= LOADING SPINNER ============= */
         .spinner {
             display: inline-block;
             width: 24px;
@@ -1379,21 +919,43 @@
             to { transform: rotate(360deg); }
         }
 
-        .loading-container {
-            text-align: center;
-            padding: 3rem;
+        /* ============= ALERT ============= */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-md);
+            color: white;
+            font-weight: 600;
+            z-index: 3000;
+            display: none;
+            animation: slideIn 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            max-width: min(400px, 90vw);
         }
 
-        .loading-container p {
-            margin-top: 1rem;
-            color: #64748b;
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        /* Empty States */
+        .alert.success { background: var(--secondary-color); }
+        .alert.error { background: #ef4444; }
+        .alert.info { background: #3b82f6; }
+        .alert.warning { background: var(--primary-color); }
+
+        /* ============= EMPTY STATES ============= */
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: #64748b;
+            color: var(--text-light);
         }
 
         .empty-state i {
@@ -1402,8 +964,41 @@
             margin-bottom: 1rem;
         }
 
-        /* Responsive */
-        @media (max-width: 968px) {
+        /* ============= ORDER HISTORY ============= */
+        .order-history-item {
+            background: var(--light-bg);
+            border-radius: var(--border-radius-md);
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .order-history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* ============= RESPONSIVE DESIGN ============= */
+
+        /* Large Tablets (992px and below) */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 240px 1fr;
+                gap: 1rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        /* Tablets (768px and below) */
+        @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
             }
@@ -1415,49 +1010,231 @@
             
             .header-content {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .logo {
+                justify-content: center;
             }
             
             .nav-links {
-                width: 100%;
                 justify-content: center;
-                flex-wrap: wrap;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
             }
-
+            
+            .nav-links::-webkit-scrollbar {
+                height: 3px;
+            }
+            
+            .nav-links::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 10px;
+            }
+            
             .hero-banner h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
-
+            
             .promo-code {
                 font-size: 1.2rem;
+                padding: 0.6rem 1.2rem;
             }
-
-            .address-row {
-                grid-template-columns: 1fr;
+            
+            .offers-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .tracking-steps::before {
+                display: none;
+            }
+            
+            .step {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
             }
         }
 
-        @media (max-width: 480px) {
+        /* Mobile Phones (576px and below) */
+        @media (max-width: 576px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .header {
+                padding: 0.5rem;
+            }
+            
+            .nav-links a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .nav-links a span {
+                display: none; /* Hide text on very small screens */
+            }
+            
+            .nav-links a i {
+                font-size: 1.2rem;
+                margin: 0;
+            }
+            
+            .cart-icon span:not(.cart-count) {
+                display: none;
+            }
+            
+            .profile-icon span:not(.cart-count) {
+                display: none;
+            }
+            
+            .hero-banner {
+                padding: 1.2rem;
+            }
+            
+            .hero-banner h2 {
+                font-size: 1.5rem;
+            }
+            
+            .hero-banner p {
+                font-size: 0.9rem;
+            }
+            
+            .promo-code {
+                font-size: 1rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
             .menu-grid {
                 grid-template-columns: 1fr;
             }
-
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .search-bar button {
+                width: 100%;
+            }
+            
+            .order-type-selector {
+                grid-template-columns: 1fr;
+            }
+            
             .cart-item {
                 flex-direction: column;
                 text-align: center;
-                gap: 0.5rem;
             }
-
+            
             .cart-item-total {
                 text-align: center;
             }
-
+            
+            .cart-item-quantity {
+                justify-content: center;
+            }
+            
             .mpesa-input {
                 flex-direction: column;
             }
-
-            .order-type-selector {
+            
+            .mpesa-input button {
+                width: 100%;
+            }
+            
+            .modal-content {
+                padding: 1.2rem;
+                width: 100%;
+            }
+            
+            .address-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .tracking-steps {
+                justify-content: center;
+            }
+            
+            .step {
+                width: 35px;
+                height: 35px;
+                font-size: 0.8rem;
+            }
+            
+            .order-history-header {
                 flex-direction: column;
+            }
+        }
+
+        /* Large TVs and Desktops (1200px and above) */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1400px;
+                margin: 2rem auto;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .hero-banner {
+                padding: 3rem;
+            }
+            
+            .hero-banner h2 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Ultra-wide screens (1600px and above) */
+        @media (min-width: 1600px) {
+            .container {
+                max-width: 1600px;
+            }
+            
+            .menu-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .hero-banner h2 {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .header, .sidebar, .search-bar, .add-to-cart, .cart-icon, .profile-icon {
+                display: none !important;
+            }
+            
+            .container {
+                display: block;
+            }
+            
+            .main-content {
+                box-shadow: none;
+                border: none;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-links a,
+            .category-list li,
+            .add-to-cart,
+            .order-type-btn,
+            .pay-btn {
+                padding: 12px 16px; /* Larger touch targets */
+            }
+            
+            .cart-item-quantity button {
+                width: 44px;
+                height: 44px;
+            }
+            
+            input, select, textarea {
+                font-size: 16px !important; /* Prevents zoom on iOS */
             }
         }
     </style>
@@ -1470,12 +1247,18 @@
                 <i class="fas fa-utensils"></i>
                 <h1 id="restaurantHeaderName">Restaurant</h1>
             </div>
-            <div class="nav-links">
-                <a href="#" onclick="scrollToSection('menu')"><i class="fas fa-utensils"></i> Menu</a>
-                <a href="#" onclick="scrollToSection('offers')"><i class="fas fa-tags"></i> Offers</a>
-                <a href="#" onclick="checkAuthAndShow('reservation')"><i class="fas fa-calendar-alt"></i> Book Table</a>
-                <a href="#" onclick="checkAuthAndShow('tracking')"><i class="fas fa-truck"></i> Track Order</a>
-                <a href="#" onclick="checkAuthAndShow('history')"><i class="fas fa-history"></i> My Orders</a>
+            
+            <!-- Mobile Menu Button (visible on small screens) -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="scrollToSection('menu')"><i class="fas fa-utensils"></i> <span>Menu</span></a>
+                <a href="#" onclick="scrollToSection('offers')"><i class="fas fa-tags"></i> <span>Offers</span></a>
+                <a href="#" onclick="checkAuthAndShow('reservation')"><i class="fas fa-calendar-alt"></i> <span>Book Table</span></a>
+                <a href="#" onclick="checkAuthAndShow('tracking')"><i class="fas fa-truck"></i> <span>Track Order</span></a>
+                <a href="#" onclick="checkAuthAndShow('history')"><i class="fas fa-history"></i> <span>My Orders</span></a>
                 <div class="cart-icon" onclick="checkAuthAndShow('cart')">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Cart</span>
@@ -1509,7 +1292,7 @@
 
     <!-- Auth Modal -->
     <div id="authModal" class="auth-modal">
-        <div class="auth-content">
+        <div class="modal-content">
             <div class="auth-header">
                 <h2>Welcome to <span id="welcomeRestaurantName">Our Restaurant</span></h2>
                 <p>Sign in to continue</p>
@@ -1590,8 +1373,8 @@
     </div>
 
     <!-- Profile Modal -->
-    <div id="profileModal" class="auth-modal">
-        <div class="auth-content">
+    <div id="profileModal" class="profile-modal">
+        <div class="modal-content">
             <div class="auth-header">
                 <h2>My Profile</h2>
                 <p>View and edit your information</p>
@@ -1625,8 +1408,8 @@
     </div>
 
     <!-- Change Password Modal -->
-    <div id="changePasswordModal" class="auth-modal">
-        <div class="auth-content">
+    <div id="changePasswordModal" class="profile-modal">
+        <div class="modal-content">
             <div class="auth-header">
                 <h2>Change Password</h2>
                 <p>Update your password</p>
@@ -1653,7 +1436,7 @@
 
     <!-- My Reservations Modal -->
     <div id="myReservationsModal" class="history-modal">
-        <div class="history-content">
+        <div class="modal-content">
             <div class="cart-header">
                 <h3><i class="fas fa-calendar-alt"></i> My Reservations</h3>
                 <button class="close-btn" onclick="hideModal('myReservationsModal')">&times;</button>
@@ -1713,7 +1496,7 @@
 
     <!-- Cart Modal -->
     <div id="cartModal" class="cart-modal">
-        <div class="cart-content">
+        <div class="modal-content cart-content">
             <div class="cart-header">
                 <h3><i class="fas fa-shopping-cart"></i> Your Order</h3>
                 <button class="close-btn" onclick="hideCartModal()">&times;</button>
@@ -1778,7 +1561,7 @@
             <div class="mpesa-section">
                 <h4><i class="fas fa-mobile-alt"></i> Lipa Na M-PESA</h4>
                 <div class="mpesa-input">
-                    <input type="text" id="mpesaPhone" placeholder="0712 345 678" value="254">
+                    <input type="text" id="mpesaPhone" placeholder="0712 345 678">
                     <button onclick="initiateMpesaPayment()" id="stkBtn">
                         <i class="fas fa-lock"></i> Pay
                     </button>
@@ -1797,17 +1580,15 @@
 
     <!-- Reservation Modal -->
     <div id="reservationModal" class="reservation-modal">
-        <div class="reservation-content">
+        <div class="modal-content">
             <div class="cart-header">
                 <h3><i class="fas fa-calendar-alt"></i> Book a Table</h3>
                 <button class="close-btn" onclick="hideReservationModal()">&times;</button>
             </div>
             
             <form id="reservationForm">
-                <!-- Hidden field for customer ID -->
                 <input type="hidden" id="resCustomerId" value="">
                 
-                <!-- Display customer info for confirmation -->
                 <div class="form-group" style="background: #f8fafc; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
                     <label style="font-weight: 600; color: #f97316;">Booking for:</label>
                     <p id="displayCustomerName" style="margin: 0.3rem 0; font-weight: 600;"></p>
@@ -1854,7 +1635,7 @@
 
     <!-- Order Tracking Modal -->
     <div id="trackingModal" class="tracking-modal">
-        <div class="tracking-content">
+        <div class="modal-content">
             <div class="cart-header">
                 <h3><i class="fas fa-truck"></i> Track Order</h3>
                 <button class="close-btn" onclick="hideTrackingModal()">&times;</button>
@@ -1868,7 +1649,7 @@
 
     <!-- Order History Modal -->
     <div id="historyModal" class="history-modal">
-        <div class="history-content">
+        <div class="modal-content">
             <div class="cart-header">
                 <h3><i class="fas fa-history"></i> My Orders</h3>
                 <button class="close-btn" onclick="hideHistoryModal()">&times;</button>
@@ -1884,10 +1665,24 @@
     <div id="alert" class="alert"></div>
 
     <script>
+        // ============= MOBILE MENU TOGGLE =============
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const navLinks = document.getElementById('navLinks');
+            if (window.innerWidth > 768) {
+                navLinks.style.display = 'flex';
+            } else {
+                navLinks.style.display = '';
+            }
+        });
+
         // ============= CONFIGURATION =============
-const API_URL = window.location.hostname === 'localhost' 
-    ? '/api'
-    : '/api';
+        const API_URL = '';
         let menuItems = [];
         let cart = [];
         let currentLanguage = 'en';
@@ -1903,7 +1698,6 @@ const API_URL = window.location.hostname === 'localhost'
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Customer Portal Starting...');
             
-            // Load customer data from localStorage
             const savedCustomer = localStorage.getItem('customerData');
             if (savedCustomer) {
                 try {
@@ -1914,10 +1708,8 @@ const API_URL = window.location.hostname === 'localhost'
                 }
             }
             
-            // Load main content (menu)
             loadMainContent();
             
-            // Load cart from localStorage
             const savedCart = localStorage.getItem('cart');
             if (savedCart) {
                 try {
@@ -1928,7 +1720,6 @@ const API_URL = window.location.hostname === 'localhost'
                 }
             }
 
-            // Check restaurant status every minute
             updateRestaurantStatus();
             setInterval(updateRestaurantStatus, 60000);
         });
@@ -1936,28 +1727,22 @@ const API_URL = window.location.hostname === 'localhost'
         function loadMainContent() {
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
-                <!-- Hero Banner -->
                 <div class="hero-banner" id="heroBanner">
                     <h2 id="heroTitle">Welcome to Our Restaurant</h2>
                     <p id="heroDesc">Delicious food delivered to your doorstep</p>
                     <div class="promo-code" id="promoCode">WELCOME254</div>
                 </div>
 
-                <!-- Special Offers Section -->
                 <div class="offers-section" id="offersSection">
                     <h3><i class="fas fa-tags"></i> Today's Special Offers</h3>
-                    <div class="offers-grid" id="offersGrid">
-                        <!-- Populated by JavaScript -->
-                    </div>
+                    <div class="offers-grid" id="offersGrid"></div>
                 </div>
 
-                <!-- Search Bar -->
                 <div class="search-bar">
                     <input type="text" id="searchInput" placeholder="Search for nyama choma, chips, drinks..." onkeyup="searchMenu()">
                     <button onclick="searchMenu()"><i class="fas fa-search"></i> Search</button>
                 </div>
 
-                <!-- Menu Section -->
                 <div class="menu-section" id="menuSection">
                     <h3><i class="fas fa-utensils"></i> Our Menu</h3>
                     <div class="menu-grid" id="menuGrid">
@@ -1974,7 +1759,7 @@ const API_URL = window.location.hostname === 'localhost'
             loadRestaurantSettings();
         }
 
-        // ============= AUTH FUNCTIONS =============
+        // ============= AUTH FUNCTIONS (Simplified) =============
         function checkAuth() {
             return !!customerToken;
         }
@@ -2040,7 +1825,7 @@ const API_URL = window.location.hostname === 'localhost'
             }
             
             try {
-                const response = await fetch(`${API_URL}/customer/auth/login`, {
+                const response = await fetch(`${API_URL}/api/customer/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -2058,7 +1843,6 @@ const API_URL = window.location.hostname === 'localhost'
                     hideAuthModal();
                     showAlert('Login successful!', 'success');
                     
-                    // Load the pending action if any
                     if (pendingAction) {
                         pendingAction();
                         pendingAction = null;
@@ -2081,7 +1865,6 @@ const API_URL = window.location.hostname === 'localhost'
             const confirmPassword = document.getElementById('regConfirmPassword').value;
             const address = document.getElementById('regAddress').value;
             
-            // Validate phone number
             phone = phone.replace(/\D/g, '');
             if (phone.length < 10 || phone.length > 12) {
                 document.getElementById('registerError').textContent = 'Please enter a valid phone number (10-12 digits)';
@@ -2089,7 +1872,6 @@ const API_URL = window.location.hostname === 'localhost'
                 return;
             }
             
-            // Format phone to 254 format
             if (phone.startsWith('0')) {
                 phone = '254' + phone.substring(1);
             } else if (phone.startsWith('7')) {
@@ -2115,16 +1897,10 @@ const API_URL = window.location.hostname === 'localhost'
             }
             
             try {
-                const response = await fetch(`${API_URL}/customer/auth/register`, {
+                const response = await fetch(`${API_URL}/api/customer/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        name, 
-                        email, 
-                        password, 
-                        phone, 
-                        address 
-                    })
+                    body: JSON.stringify({ name, email, password, phone, address })
                 });
                 
                 const data = await response.json();
@@ -2147,41 +1923,8 @@ const API_URL = window.location.hostname === 'localhost'
             }
         }
 
-        async function forgotPassword() {
-            const email = document.getElementById('forgotEmail').value;
-            
-            if (!email) {
-                document.getElementById('forgotError').textContent = 'Please enter your email';
-                document.getElementById('forgotError').style.display = 'block';
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/customer/auth/forgot-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    document.getElementById('forgotSuccess').style.display = 'block';
-                    document.getElementById('forgotSuccess').textContent = 'Password reset link sent to your email';
-                    document.getElementById('forgotError').style.display = 'none';
-                } else {
-                    document.getElementById('forgotError').textContent = data.message;
-                    document.getElementById('forgotError').style.display = 'block';
-                }
-            } catch (error) {
-                document.getElementById('forgotError').textContent = 'Connection error';
-                document.getElementById('forgotError').style.display = 'block';
-            }
-        }
-
         function updateProfileUI() {
             if (customerData) {
-                // Get first name for display
                 const firstName = customerData.name.split(' ')[0];
                 document.getElementById('profileName').textContent = firstName;
             }
@@ -2202,7 +1945,6 @@ const API_URL = window.location.hostname === 'localhost'
                 return;
             }
             
-            // Format phone for display
             let displayPhone = customerData.phone || '';
             if (displayPhone.startsWith('254')) {
                 displayPhone = '0' + displayPhone.substring(3);
@@ -2221,7 +1963,6 @@ const API_URL = window.location.hostname === 'localhost'
             const phone = document.getElementById('profilePhone').value;
             const address = document.getElementById('profileAddress').value;
             
-            // Format phone for backend
             let formattedPhone = phone.replace(/\D/g, '');
             if (formattedPhone.startsWith('0')) {
                 formattedPhone = '254' + formattedPhone.substring(1);
@@ -2230,7 +1971,7 @@ const API_URL = window.location.hostname === 'localhost'
             }
             
             try {
-                const response = await fetch(`${API_URL}/customer/auth/update-profile`, {
+                const response = await fetch(`${API_URL}/api/customer/auth/update-profile`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2295,7 +2036,7 @@ const API_URL = window.location.hostname === 'localhost'
             }
             
             try {
-                const response = await fetch(`${API_URL}/customer/auth/change-password`, {
+                const response = await fetch(`${API_URL}/api/customer/auth/change-password`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2328,7 +2069,6 @@ const API_URL = window.location.hostname === 'localhost'
             }
         }
 
-        // ============= MY RESERVATIONS FUNCTION =============
         async function showMyReservations() {
             if (!checkAuth()) {
                 showAuthModal();
@@ -2342,7 +2082,7 @@ const API_URL = window.location.hostname === 'localhost'
             modal.classList.add('active');
             
             try {
-                const response = await fetch(`${API_URL}/reservations/my-reservations`, {
+                const response = await fetch(`${API_URL}/api/reservations/my-reservations`, {
                     headers: { 'Authorization': `Bearer ${customerToken}` }
                 });
                 
@@ -2378,7 +2118,6 @@ const API_URL = window.location.hostname === 'localhost'
             list.innerHTML = reservations.map(res => {
                 const date = new Date(res.date).toLocaleDateString();
                 
-                // Determine status class
                 let statusClass = 'status-pending';
                 if (res.status === 'Confirmed') statusClass = 'status-paid';
                 else if (res.status === 'Seated') statusClass = 'status-active';
@@ -2403,7 +2142,6 @@ const API_URL = window.location.hostname === 'localhost'
             }).join('');
         }
 
-        // ============= AUTH CHECK FOR ACTIONS =============
         let pendingAction = null;
 
         function checkAuthAndShow(action) {
@@ -2428,7 +2166,6 @@ const API_URL = window.location.hostname === 'localhost'
             }
         }
 
-        // ============= RESERVATION FUNCTIONS =============
         function showReservationModal() {
             requireAuth(() => {
                 const modal = document.getElementById('reservationModal');
@@ -2436,17 +2173,14 @@ const API_URL = window.location.hostname === 'localhost'
                 document.getElementById('resDate').min = today;
                 document.getElementById('resDate').value = today;
                 
-                // Auto-fill customer data from logged-in user
                 if (customerData) {
                     document.getElementById('resCustomerId').value = customerData._id || '';
                     
-                    // Format phone number for display
                     let displayPhone = customerData.phone || 'Not provided';
                     if (displayPhone && displayPhone.startsWith('254')) {
                         displayPhone = '0' + displayPhone.substring(3);
                     }
                     
-                    // Display customer info
                     document.getElementById('displayCustomerName').innerHTML = `<i class="fas fa-user"></i> ${customerData.name || 'Not provided'}`;
                     document.getElementById('displayCustomerPhone').innerHTML = `<i class="fas fa-phone"></i> ${displayPhone}`;
                     document.getElementById('displayCustomerEmail').innerHTML = `<i class="fas fa-envelope"></i> ${customerData.email || 'Not provided'}`;
@@ -2460,7 +2194,6 @@ const API_URL = window.location.hostname === 'localhost'
             document.getElementById('reservationModal').classList.remove('active');
         }
 
-        // Reservation Form Handler
         document.getElementById('reservationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -2469,16 +2202,13 @@ const API_URL = window.location.hostname === 'localhost'
             const time = document.getElementById('resTime').value;
             const requests = document.getElementById('resRequests').value;
             
-            // Get customer data
             const customerId = document.getElementById('resCustomerId').value;
             
-            // Validate customer data is loaded
             if (!customerData) {
                 showAlert('Please log in to make a reservation', 'error');
                 return;
             }
             
-            // Format phone number for backend (ensure it starts with 254)
             let phone = customerData.phone || '';
             phone = phone.replace(/\D/g, '');
             if (phone.startsWith('0')) {
@@ -2511,7 +2241,7 @@ const API_URL = window.location.hostname === 'localhost'
             btn.disabled = true;
             
             try {
-                const response = await fetch(`${API_URL}/reservations`, {
+                const response = await fetch(`${API_URL}/api/reservations`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2524,19 +2254,16 @@ const API_URL = window.location.hostname === 'localhost'
                 console.log('📥 Reservation response:', result);
                 
                 if (response.ok) {
-                    // Format phone for display
                     let displayPhone = phone;
                     if (displayPhone.startsWith('254')) {
                         displayPhone = '0' + displayPhone.substring(3);
                     }
                     
-                    // Get restaurant name for confirmation message
                     const restaurantName = getRestaurantName();
                     
                     showAlert(`✅ Table booked successfully! Confirmation sent to ${displayPhone}`, 'success');
                     hideReservationModal();
                     
-                    // Log SMS confirmation
                     console.log(`📱 SMS sent to ${phone}: Your table for ${guests} on ${date} at ${time} has been confirmed. Thank you for choosing ${restaurantName}!`);
                 } else {
                     showAlert(result.message || 'Booking failed', 'error');
@@ -2550,39 +2277,28 @@ const API_URL = window.location.hostname === 'localhost'
             }
         });
 
-        // ============= RESTAURANT SETTINGS ============
         async function loadRestaurantSettings() {
             try {
-                const response = await fetch(`${API_URL}/restaurant`);
+                const response = await fetch(`${API_URL}/api/restaurant`);
                 if (response.ok) {
                     restaurantSettings = await response.json();
                     
-                    // Update all restaurant name instances
                     const restaurantName = restaurantSettings.name || 'Our Restaurant';
                     
-                    // Update header
                     document.getElementById('restaurantHeaderName').textContent = restaurantName;
-                    
-                    // Update welcome message
                     document.getElementById('welcomeRestaurantName').textContent = restaurantName;
-                    
-                    // Update hero banner
                     document.getElementById('heroTitle').textContent = `Welcome to ${restaurantName}!`;
                     
-                    // Update contact info
                     document.getElementById('restaurantPhone').textContent = restaurantSettings.phone || '0712 345 678';
                     document.getElementById('restaurantAddress').textContent = restaurantSettings.address || 'Nairobi, Kenya';
                     document.getElementById('restaurantEmail').textContent = restaurantSettings.email || 'info@restaurant.com';
                     
-                    // Store for later use
                     window.restaurantName = restaurantName;
                     
-                    // Update page title
                     document.title = `${restaurantName} - Order Online & Reservations`;
                 }
             } catch (error) {
                 console.error('Error loading settings:', error);
-                // Set defaults
                 window.restaurantName = 'Our Restaurant';
                 document.getElementById('restaurantHeaderName').textContent = 'Our Restaurant';
                 document.getElementById('welcomeRestaurantName').textContent = 'Our Restaurant';
@@ -2614,10 +2330,9 @@ const API_URL = window.location.hostname === 'localhost'
             return window.restaurantName || 'Our Restaurant';
         }
 
-        // ============= MENU FUNCTIONS =============
         async function loadMenuItems() {
             try {
-                const response = await fetch(`${API_URL}/menu/available?t=${Date.now()}`);
+                const response = await fetch(`${API_URL}/api/menu/available?t=${Date.now()}`);
                 
                 if (response.ok) {
                     const items = await response.json();
@@ -2727,7 +2442,6 @@ const API_URL = window.location.hostname === 'localhost'
             document.getElementById(section + 'Section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ============= OFFERS =============
         async function loadOffers() {
             try {
                 const offers = [
@@ -2754,7 +2468,6 @@ const API_URL = window.location.hostname === 'localhost'
             `).join('');
         }
 
-        // ============= CART FUNCTIONS =============
         function addToCart(itemId) {
             requireAuth(() => {
                 const item = menuItems.find(i => i._id === itemId);
@@ -2870,7 +2583,6 @@ const API_URL = window.location.hostname === 'localhost'
             }
         }
 
-        // ============= M-PESA PAYMENT =============
         async function initiateMpesaPayment() {
             const phone = document.getElementById('mpesaPhone').value;
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -2908,11 +2620,9 @@ const API_URL = window.location.hostname === 'localhost'
                 
                 const orderRef = 'ORD' + Date.now().toString().slice(-8);
                 
-                const response = await fetch(`${API_URL}/mpesa/stkpush`, {
+                const response = await fetch(`${API_URL}/api/mpesa/stkpush`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         phone: formattedPhone,
                         amount: total,
@@ -2966,11 +2676,9 @@ const API_URL = window.location.hostname === 'localhost'
                 }
                 
                 try {
-                    const response = await fetch(`${API_URL}/mpesa/query`, {
+                    const response = await fetch(`${API_URL}/api/mpesa/query`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ checkoutRequestId })
                     });
                     
@@ -2992,7 +2700,6 @@ const API_URL = window.location.hostname === 'localhost'
             }, 1000);
         }
 
-        // ============= ORDER PLACEMENT =============
         async function placeOrder() {
             if (!checkAuth()) {
                 showAuthModal();
@@ -3004,7 +2711,6 @@ const API_URL = window.location.hostname === 'localhost'
                 return;
             }
             
-            // Validate delivery address if order type is delivery
             if (selectedOrderType === 'delivery') {
                 const street = document.getElementById('deliveryStreet').value;
                 const city = document.getElementById('deliveryCity').value;
@@ -3015,13 +2721,11 @@ const API_URL = window.location.hostname === 'localhost'
                 }
             }
             
-            // Prepare order items
             const orderItems = cart.map(item => ({
                 menuItemId: item._id,
                 quantity: item.quantity
             }));
             
-            // Prepare order data
             const orderData = {
                 items: orderItems,
                 orderType: selectedOrderType,
@@ -3029,7 +2733,6 @@ const API_URL = window.location.hostname === 'localhost'
                 notes: ''
             };
             
-            // Add delivery address if needed
             if (selectedOrderType === 'delivery') {
                 orderData.deliveryAddress = {
                     street: document.getElementById('deliveryStreet').value,
@@ -3039,7 +2742,6 @@ const API_URL = window.location.hostname === 'localhost'
                 };
             }
             
-            // Add M-PESA checkout ID if available
             if (mpesaCheckoutId) {
                 orderData.mpesaCheckoutId = mpesaCheckoutId;
             }
@@ -3052,7 +2754,7 @@ const API_URL = window.location.hostname === 'localhost'
             try {
                 console.log('📤 Placing order with data:', JSON.stringify(orderData, null, 2));
                 
-                const response = await fetch(`${API_URL}/orders`, {
+                const response = await fetch(`${API_URL}/api/orders`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -3065,7 +2767,6 @@ const API_URL = window.location.hostname === 'localhost'
                 console.log('📥 Order response:', result);
                 
                 if (response.ok) {
-                    // Create order summary for display
                     const orderSummary = {
                         orderNumber: result.order.orderNumber,
                         total: result.order.total,
@@ -3074,28 +2775,23 @@ const API_URL = window.location.hostname === 'localhost'
                         deliveryAddress: result.order.deliveryAddress
                     };
                     
-                    // Clear cart
                     cart = [];
                     saveCart();
                     hideCartModal();
                     
-                    // Show confirmation with details
                     showOrderConfirmation(orderSummary);
                     currentOrder = orderSummary;
                     
-                    // Clear M-PESA status
                     document.getElementById('mpesaStatus').className = 'mpesa-status';
                     document.getElementById('mpesaStatus').innerHTML = '';
                     mpesaCheckoutId = null;
                     
-                    // Reset delivery form
                     document.getElementById('deliveryStreet').value = '';
                     document.getElementById('deliveryCity').value = '';
                     document.getElementById('deliveryLandmark').value = '';
                     document.getElementById('deliveryInstructions').value = '';
                     
                 } else {
-                    // Show detailed error message
                     let errorMessage = result.message || 'Order failed';
                     if (result.errors) {
                         errorMessage += ': ' + result.errors.join(', ');
@@ -3113,10 +2809,8 @@ const API_URL = window.location.hostname === 'localhost'
         }
 
         function showOrderConfirmation(order) {
-            // Get restaurant name
             const restaurantName = getRestaurantName();
             
-            // Create items list HTML
             const itemsList = order.items.map(item => 
                 `<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
                     <span>${item.quantity}x ${item.name}</span>
@@ -3124,7 +2818,6 @@ const API_URL = window.location.hostname === 'localhost'
                 </div>`
             ).join('');
             
-            // Create delivery info HTML if applicable
             const deliveryInfo = order.orderType === 'delivery' && order.deliveryAddress ? `
                 <div style="background: #f1f5f9; border-radius: 8px; padding: 1rem; margin: 1rem 0; text-align: left;">
                     <h4 style="color: #f97316; margin-bottom: 0.5rem;"><i class="fas fa-map-marker-alt"></i> Delivery Address</h4>
@@ -3169,13 +2862,11 @@ const API_URL = window.location.hostname === 'localhost'
             alert.style.right = '20px';
             alert.style.top = '20px';
             
-            // Auto-hide after 15 seconds
             setTimeout(() => {
                 alert.style.display = 'none';
             }, 15000);
         }
 
-        // ============= ORDER TRACKING =============
         function showOrderTracking() {
             requireAuth(() => {
                 const modal = document.getElementById('trackingModal');
@@ -3237,11 +2928,10 @@ const API_URL = window.location.hostname === 'localhost'
 
         async function trackOrderByNumber(orderNumber) {
             try {
-                // Format phone for query
                 let phone = customerData?.phone || '';
                 phone = phone.replace(/\D/g, '');
                 
-                const response = await fetch(`${API_URL}/orders/track/${orderNumber}?phone=${phone}`);
+                const response = await fetch(`${API_URL}/api/orders/track/${orderNumber}?phone=${phone}`);
                 
                 if (response.ok) {
                     const order = await response.json();
@@ -3263,13 +2953,11 @@ const API_URL = window.location.hostname === 'localhost'
             document.getElementById('trackingTotal').textContent = `KES ${order.total}`;
             document.getElementById('trackingType').textContent = order.orderType || 'N/A';
             
-            // Display items
             const itemsHtml = order.items.map(item => 
                 `<div>${item.quantity}x ${item.name} - KES ${item.price * item.quantity}</div>`
             ).join('');
             document.getElementById('trackingItems').innerHTML = itemsHtml;
             
-            // Display delivery info if applicable
             if (order.orderType === 'delivery' && order.deliveryAddress) {
                 const deliveryInfo = document.getElementById('trackingDeliveryInfo');
                 deliveryInfo.style.display = 'block';
@@ -3303,7 +2991,6 @@ const API_URL = window.location.hostname === 'localhost'
             });
         }
 
-        // ============= ORDER HISTORY =============
         function showMyOrders() {
             requireAuth(async () => {
                 const modal = document.getElementById('historyModal');
@@ -3313,7 +3000,7 @@ const API_URL = window.location.hostname === 'localhost'
                 modal.classList.add('active');
                 
                 try {
-                    const response = await fetch(`${API_URL}/orders/my-orders`, {
+                    const response = await fetch(`${API_URL}/api/orders/my-orders`, {
                         headers: { 'Authorization': `Bearer ${customerToken}` }
                     });
                     
@@ -3396,7 +3083,6 @@ const API_URL = window.location.hostname === 'localhost'
             document.getElementById('historyModal').classList.remove('active');
         }
 
-        // ============= LANGUAGE =============
         function switchLanguage(lang) {
             currentLanguage = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -3410,7 +3096,6 @@ const API_URL = window.location.hostname === 'localhost'
             displayMenuItems(menuItems);
         }
 
-        // ============= UTILITY FUNCTIONS =============
         function showAlert(message, type = 'success') {
             const alert = document.getElementById('alert');
             alert.textContent = message;
